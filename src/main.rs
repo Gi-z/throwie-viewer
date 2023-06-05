@@ -9,8 +9,6 @@ use colorous::Gradient;
 mod csi;
 mod realtime_heatmap;
 
-const MESSAGE_BATCH_SIZE: usize = 100;
-
 const W: usize = 1000;
 const H: usize = 1000;
 
@@ -57,9 +55,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     let socket = csi::open_csi_socket();
     println!("Successfully bound port {}.", csi::UDP_SERVER_PORT);
 
-    // let mut readings = Vec::new();
-
-    // let mut hasdrawn: bool = false;
     let mut matrix: [[f32; 64]; 100] = [[0_f32; 64]; 100];
     let mut maxval: f32 = 0.0;
 
@@ -120,12 +115,5 @@ fn main() -> Result<(), Box<dyn Error>> {
             // let after = Instant::now();
             // println!("Total Data/Frame Processing time: {:.2?}", after - now);
         }
-
-        // if readings.len() == MESSAGE_BATCH_SIZE {
-        //     if !hasdrawn {
-        //         (matrix, maxval) = realtime_heatmap::get_initial_matrix(&readings);
-        //         hasdrawn = true;
-        //     }
-        // }
     }
 }
