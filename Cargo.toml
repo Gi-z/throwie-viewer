@@ -1,0 +1,20 @@
+[package]
+name = "throwie-viewer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = "*"
+colorous = "*"
+num = "*"
+plotters = "*"
+plotters-bitmap = "*"
+protobuf = "3"
+thiserror = "*"
+unix-ts = "0.4.1"
+minifb = "*"
+rayon = "*"
+
+[build-dependencies]
+protobuf-codegen = "3"
+protoc-rust = "^2.0"
