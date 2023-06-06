@@ -1,6 +1,6 @@
 use crate::csi::{CSIMeasurement, get_scaling_factor};
 
-pub const WINDOW_SIZE: usize = 100;
+pub const WINDOW_SIZE: usize = 1000;
 
 pub fn update_matrix(matrix: [[f32; 64]; WINDOW_SIZE], mut maxval: f32, reading: &CSIMeasurement) -> ([[f32; 64]; WINDOW_SIZE], f32) {
     let mut newline = [0 as f32; 64];

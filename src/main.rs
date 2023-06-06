@@ -5,11 +5,14 @@ use plotters_bitmap::bitmap_pixel::BGRXPixel;
 use plotters_bitmap::BitMapBackend;
 use std::error::Error;
 use colorous::Gradient;
+use std::time::Instant;
 
 mod csi;
 mod realtime_heatmap;
 
-const W: usize = 1000;
+// const W: usize = 1000;
+// const H: usize = 1000;
+const W: usize = 64;
 const H: usize = 1000;
 
 const COLOR_SCALE: Gradient = colorous::TURBO;
@@ -64,7 +67,17 @@ fn main() -> Result<(), Box<dyn Error>> {
         "CSI Heatmap",
         W,
         H,
-        WindowOptions::default(),
+        // WindowOptions::default(),
+        WindowOptions {
+            borderless: false,
+            title: true,
+            resize: true,
+            scale: minifb::Scale::X1,
+            scale_mode: minifb::ScaleMode::Stretch,
+            topmost: false,
+            transparency: false,
+            none: false
+        }
     )?;
 
     {
@@ -99,7 +112,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 )?
                 .into_drawing_area();
 
-                let cells = root.split_evenly((100, 64));
+                let cells = root.split_evenly((realtime_heatmap::WINDOW_SIZE, 64));
 
                 for (cell, csi) in std::iter::zip(cells.iter(), matrix.into_iter().flatten()) {
                     let mag_scaled = csi.sqrt() / maxval.sqrt();
@@ -109,6 +122,21 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                 root.present()?;
             }
+
+            // Manually updating the u32 framebuffer if you wanna be weird like that
+            // {
+            //     let mut b: &mut [u32] = buf.borrow_mut();
+            //     for (i, csi) in matrix.into_iter().flatten().enumerate() {
+            //         let mag_scaled = csi.sqrt() / maxval.sqrt();
+            //         let color = COLOR_SCALE.eval_continuous(mag_scaled as f64);
+                    
+            //         let mut rgb: u32 = 0;
+            //         rgb += color.r as u32;
+            //         rgb = (rgb << 8) + color.g as u32;
+            //         rgb = (rgb << 8) + color.b as u32;
+            //         b[i] = rgb;
+            //     }
+            // }
             
             window.update_with_buffer(buf.borrow(), W, H)?;
 
