@@ -55,7 +55,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let socket = csi::open_csi_socket();
     println!("Successfully bound port {}.", csi::UDP_SERVER_PORT);
 
-    let mut matrix: [[f32; 64]; 100] = [[0_f32; 64]; 100];
+    let mut matrix: [[f32; 64]; realtime_heatmap::WINDOW_SIZE] = [[0_f32; 64]; realtime_heatmap::WINDOW_SIZE];
     let mut maxval: f32 = 0.0;
 
     let mut buf = BufferWrapper(vec![0u32; W * H]);
